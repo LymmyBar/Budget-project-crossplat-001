@@ -1,0 +1,10 @@
+# Build outputs
+bin/
+obj/
+
+# VS/VS Code artifacts
+.vscode/
+*.user
+
+# OS files
+.DS_Store
