@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <Authors>LymmyBar</Authors>
+    <Company>LymmyBar</Company>
+    <RepositoryUrl>https://github.com/LymmyBar/Budget-project-crossplat-001</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts/nupkg</PackageOutputPath>
+    <PackageProjectUrl>https://github.com/LymmyBar/Budget-project-crossplat-001</PackageProjectUrl>
+    <PackageTags>events;budget;staffing;cli</PackageTags>
+  </PropertyGroup>
+</Project>
