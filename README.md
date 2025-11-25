@@ -90,6 +90,27 @@ Destroy VMs when finished:
 vagrant destroy -f
 ```
 
+### Windows 11 prerequisites
+
+Vagrant is not available inside the Dev Container; run it on your host OS (Windows 11):
+
+1. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (or Hyper-V if preferred) and enable virtualization in BIOS.
+2. Install [Vagrant](https://developer.hashicorp.com/vagrant/downloads) for Windows (x86_64). Reboot after installation so the `vagrant` command becomes available in PowerShell.
+3. Clone this repository outside of WSL/containers (e.g., `C:\Projects\BudgetPlanner`).
+4. Open **PowerShell** in that folder and run:
+	```powershell
+	./scripts/pack-tool.sh    # requires WSL or Git Bash; alternatively run in Dev Container and copy artifacts
+	vagrant up baget
+	vagrant up ubuntu rocky
+	vagrant ssh ubuntu -c "event-budget --help"
+	```
+5. When finished, shut everything down:
+	```powershell
+	vagrant destroy -f
+	```
+
+If `vagrant` is still not found, ensure the installation directory (typically `C:\HashiCorp\Vagrant\bin`) is present in the Windows `PATH` environment variable and re-open the shell.
+
 ## Tests
 Run the automated suite (unit + lightweight persistence tests):
 
