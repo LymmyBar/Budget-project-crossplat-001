@@ -1,0 +1,51 @@
+[
+  {
+    "id": "c7682150-b905-4da7-a69a-cf9d13864362",
+    "name": "Corporate New Year Party 2025",
+    "date": "2025-12-20",
+    "venue": "Premier Palace Hotel",
+    "targetBudget": 150000,
+    "currency": "UAH",
+    "budgetItems": [
+      {
+        "id": "5f3c075d-8433-4747-87d2-f849cd4a8fec",
+        "category": "Venue",
+        "description": "Hall rent",
+        "amount": 50000,
+        "status": 2
+      },
+      {
+        "id": "2cc934f1-382f-4f6b-8552-ce272143a3b6",
+        "category": "Catering",
+        "description": "Food and drinks",
+        "amount": 30000,
+        "status": 1
+      },
+      {
+        "id": "99434cf4-78d9-464b-ab05-34575a5cd49c",
+        "category": "Marketing",
+        "description": "Online ads",
+        "amount": 20000,
+        "status": 0
+      }
+    ],
+    "staff": [
+      {
+        "id": "08bedcbf-c0c1-42ca-820b-f6bfc32d293a",
+        "fullName": "Maria Lysenko",
+        "role": "Project Manager",
+        "hourlyRate": 600,
+        "hoursBooked": 30,
+        "totalCost": 18000
+      },
+      {
+        "id": "b7c8a44a-893e-4375-bf14-67c039c14df7",
+        "fullName": "Andrii Tkach",
+        "role": "Technical Lead",
+        "hourlyRate": 700,
+        "hoursBooked": 25,
+        "totalCost": 17500
+      }
+    ]
+  }
+]
