@@ -58,6 +58,38 @@ dotnet run --project src/EventBudgetPlanner.Cli -- summary portfolio
 
 All state is stored in `data/event-plans.json` (created on first write). Delete the file to start from a clean slate.
 
+## Packaging (Lab 2)
+
+Build a .NET tool NuGet package (output in `artifacts/nupkg`):
+
+```bash
+./scripts/pack-tool.sh
+```
+
+This produces `EventBudgetPlanner.Cli.Tool.<version>.nupkg`, which is pushed to the private BaGet feed during Vagrant provisioning.
+
+## Vagrant deployment (Lab 2)
+
+The included `Vagrantfile` spins up three VMs:
+- `baget` — hosts a BaGet container and pushes the packaged tool.
+- `ubuntu` — Ubuntu client that installs dotnet 8 SDK, adds the BaGet source, installs the tool, and runs `event-budget --help`.
+- `rocky` — Rocky Linux client that repeats the process on a different distro.
+
+Workflow:
+
+```bash
+./scripts/pack-tool.sh              # ensure NuGet package exists
+vagrant up baget                    # start the private feed host
+vagrant up ubuntu rocky             # provision the client OS machines
+vagrant ssh ubuntu -c "event-budget event list" # run sample command
+```
+
+Destroy VMs when finished:
+
+```bash
+vagrant destroy -f
+```
+
 ## Tests
 Run the automated suite (unit + lightweight persistence tests):
 

@@ -77,3 +77,14 @@ StaffAssignment
 ### Documentation Plan
 - Expand `README.md` with setup, usage, command reference, sample outputs.
 - Keep `docs/architecture.md` for teacher review.
+
+## Lab 2 Deployment Overview
+
+- CLI packaged as a .NET global tool (`EventBudgetPlanner.Cli.Tool`).
+- `scripts/pack-tool.sh` emits NuGet packages to `artifacts/nupkg`.
+- Vagrant topology:
+  - `baget` VM (Ubuntu) installs Docker, runs `loicsharma/baget`, and pushes the generated package to the private feed.
+  - `ubuntu` VM adds the BaGet feed, installs dotnet 8 SDK, and installs the tool via `dotnet tool install`.
+  - `rocky` VM repeats the process on Rocky Linux for cross-distro validation.
+- Private network `192.168.56.0/24` links the VMs; clients use `http://192.168.56.10:5555/v3/index.json` as NuGet source.
+- Provisioning scripts live under `deploy/provision/*.sh` and are invoked automatically by `Vagrantfile`.
