@@ -1,6 +1,7 @@
 # Build outputs
 bin/
 obj/
+artifacts/nupkg/*.nupkg
 
 # VS/VS Code artifacts
 .vscode/
