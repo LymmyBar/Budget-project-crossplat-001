@@ -1,0 +1,52 @@
+@model StaffAssignmentPageViewModel
+@{
+    ViewData["Title"] = "Assign staff";
+}
+
+<section class="mb-4">
+    <h1 class="h3">Staff assignment</h1>
+    <p class="text-muted">Browser flow for the <code>staff add</code> CLI command.</p>
+</section>
+
+<div class="form-panel">
+    <form asp-action="AssignStaff" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row g-3">
+            <div class="col-12">
+                <label asp-for="Input.EventId" class="form-label"></label>
+                <select asp-for="Input.EventId" asp-items="Model.EventOptions" class="form-select">
+                    <option value="">Select event…</option>
+                </select>
+                <span asp-validation-for="Input.EventId" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Input.FullName" class="form-label"></label>
+                <input asp-for="Input.FullName" class="form-control" />
+                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Input.Role" class="form-label"></label>
+                <input asp-for="Input.Role" class="form-control" />
+                <span asp-validation-for="Input.Role" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Input.HourlyRate" class="form-label"></label>
+                <input asp-for="Input.HourlyRate" class="form-control" />
+                <span asp-validation-for="Input.HourlyRate" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Input.HoursBooked" class="form-label"></label>
+                <input asp-for="Input.HoursBooked" class="form-control" />
+                <span asp-validation-for="Input.HoursBooked" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Save assignment</button>
+            <a asp-action="Dashboard" class="btn btn-outline-secondary">Back to dashboard</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

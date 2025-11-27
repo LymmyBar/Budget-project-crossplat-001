@@ -1,0 +1,42 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<section class="mb-4">
+    <h1 class="h3">Profile</h1>
+    <p class="text-muted">Identity information stored in the ASP.NET Core Identity tables.</p>
+</section>
+
+<div class="form-panel">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Full name</dt>
+        <dd class="col-sm-9">@Model.FullName</dd>
+
+        <dt class="col-sm-3">Username</dt>
+        <dd class="col-sm-9">@Model.UserName</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+
+        <dt class="col-sm-3">Phone</dt>
+        <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+        <dt class="col-sm-3">External logins</dt>
+        <dd class="col-sm-9">
+            @if (Model.HasExternalProviders)
+            {
+                <ul class="mb-0">
+                    @foreach (var provider in Model.ExternalLoginProviders)
+                    {
+                        <li>@provider</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span class="text-muted">Email + password only</span>
+            }
+        </dd>
+    </dl>
+</div>

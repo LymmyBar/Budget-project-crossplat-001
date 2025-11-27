@@ -1,0 +1,52 @@
+@model BudgetItemPageViewModel
+@{
+    ViewData["Title"] = "Budget entry";
+}
+
+<section class="mb-4">
+    <h1 class="h3">Budget line item</h1>
+    <p class="text-muted">Web counterpart to the <code>budget add</code> CLI flow.</p>
+</section>
+
+<div class="form-panel">
+    <form asp-action="AddBudgetItem" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row g-3">
+            <div class="col-12">
+                <label asp-for="Input.EventId" class="form-label"></label>
+                <select asp-for="Input.EventId" asp-items="Model.EventOptions" class="form-select">
+                    <option value="">Select event…</option>
+                </select>
+                <span asp-validation-for="Input.EventId" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Input.Category" class="form-label"></label>
+                <input asp-for="Input.Category" class="form-control" />
+                <span asp-validation-for="Input.Category" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Input.Amount" class="form-label"></label>
+                <input asp-for="Input.Amount" class="form-control" />
+                <span asp-validation-for="Input.Amount" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Input.Status" class="form-label"></label>
+                <select asp-for="Input.Status" asp-items="Model.StatusOptions" class="form-select"></select>
+                <span asp-validation-for="Input.Status" class="text-danger"></span>
+            </div>
+            <div class="col-12">
+                <label asp-for="Input.Description" class="form-label"></label>
+                <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Input.Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Add line item</button>
+            <a asp-action="Dashboard" class="btn btn-outline-secondary">Back to dashboard</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

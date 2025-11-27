@@ -1,0 +1,78 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Planner";
+}
+
+<section class="mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div>
+            <h1 class="h3 mb-1">Portfolio dashboard</h1>
+            <p class="text-muted mb-0">Ready-to-demo versions of the CLI subroutines.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a class="btn btn-primary" asp-action="CreateEvent">New event</a>
+            <a class="btn btn-outline-primary" asp-action="AddBudgetItem">Budget item</a>
+            <a class="btn btn-outline-primary" asp-action="AssignStaff">Assign staff</a>
+        </div>
+    </div>
+</section>
+
+<section class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="metric-card h-100">
+            <p class="text-muted mb-1">Events</p>
+            <p class="display-6 fw-bold">@Model.Portfolio.EventCount</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card h-100">
+            <p class="text-muted mb-1">Total budget</p>
+            <p class="display-6 fw-bold">@Model.Portfolio.TotalTargetBudget.ToString("C0")</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card h-100">
+            <p class="text-muted mb-1">Staff cost</p>
+            <p class="display-6 fw-bold">@Model.Portfolio.TotalStaffCost.ToString("C0")</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card h-100">
+            <p class="text-muted mb-1">Over budget</p>
+            <p class="display-6 fw-bold">@Model.Portfolio.OverBudgetEvents</p>
+        </div>
+    </div>
+</section>
+
+@if (!Model.HasEvents)
+{
+    <div class="alert alert-info">
+        No events yet. Start with the <a asp-action="CreateEvent">create event form</a> or import data via the CLI.
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var card in Model.Events)
+        {
+            var badgeClass = card.Summary.IsOverBudget ? "over-budget" : "on-track";
+            <div class="col-md-6">
+                <div class="planner-card h-100">
+                    <div class="planner-card__header d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-uppercase small mb-1">@card.Date.ToString("MMM d, yyyy")</p>
+                            <h4 class="mb-0">@card.Name</h4>
+                        </div>
+                        <span class="status-chip @badgeClass">@(card.Summary.IsOverBudget ? "Over budget" : "On track")</span>
+                    </div>
+                    <div class="planner-card__body">
+                        <p class="mb-1"><strong>Venue:</strong> @card.Venue</p>
+                        <p class="mb-1"><strong>Budget:</strong> @card.TargetBudget @card.Currency</p>
+                        <p class="mb-1"><strong>Paid:</strong> @card.Summary.TotalPaid.ToString("C")</p>
+                        <p class="mb-0"><strong>Remaining:</strong> @card.Summary.RemainingBudget.ToString("C")</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -47,5 +47,42 @@
         "totalCost": 17500
       }
     ]
+  },
+  {
+    "id": "c4c62d78-968b-4dbf-8b26-303546c47578",
+    "name": "123",
+    "date": "2025-11-27",
+    "venue": "123123",
+    "targetBudget": 1123,
+    "currency": "USD",
+    "budgetItems": [
+      {
+        "id": "6da20e0c-cef7-48ac-af5d-27c414fe8f11",
+        "category": "Test",
+        "description": "....",
+        "amount": 1,
+        "status": 2
+      }
+    ],
+    "staff": [
+      {
+        "id": "7c3f279d-8d68-40cb-ac18-fa26ea3cf6c6",
+        "fullName": "1",
+        "role": "Administration",
+        "hourlyRate": 150,
+        "hoursBooked": 20,
+        "totalCost": 3000
+      }
+    ]
+  },
+  {
+    "id": "534cb323-e406-4ed7-8d18-9911fd45129e",
+    "name": "Event2",
+    "date": "2025-12-26",
+    "venue": "100000.001",
+    "targetBudget": 15000,
+    "currency": "USD",
+    "budgetItems": [],
+    "staff": []
   }
 ]

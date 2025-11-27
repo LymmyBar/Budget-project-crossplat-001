@@ -1,0 +1,120 @@
+﻿@using System.Linq
+@model LandingPageViewModel
+@{
+    ViewData["Title"] = "Event Budget Planner";
+    var isAuthenticated = User.Identity?.IsAuthenticated ?? false;
+}
+
+<section class="hero mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <p class="text-uppercase fw-bold mb-2">Laboratory work #3</p>
+            <h1 class="mb-3">Plan event budgets, staff, and deliverables without leaving your browser.</h1>
+            <p class="lead mb-4">
+                The CLI from Labs #1-2 now powers a full ASP.NET Core MVC experience with Identity + OpenIddict.
+                Track allocations, invite teammates, and demonstrate OAuth2 flows from a single dashboard.
+            </p>
+            <div class="d-flex gap-3">
+                @if (isAuthenticated)
+                {
+                    <a class="btn btn-light btn-lg" asp-controller="Planner" asp-action="Dashboard">Open planner</a>
+                }
+                else
+                {
+                    <a class="btn btn-light btn-lg" asp-area="Identity" asp-page="/Account/Register">Create an account</a>
+                    <a class="btn btn-outline-light btn-lg" asp-area="Identity" asp-page="/Account/Login">Sign in</a>
+                }
+            </div>
+        </div>
+        <div class="col-lg-5 mt-4 mt-lg-0">
+            <div class="metric-card mb-4">
+                <p class="text-muted mb-1">Tracked events</p>
+                <p class="display-5 fw-bold">@Model.TotalEvents</p>
+            </div>
+            <div class="metric-card mb-4">
+                <p class="text-muted mb-1">Portfolio budget</p>
+                <p class="display-6 fw-bold">@Model.TotalBudget.ToString("C0")</p>
+            </div>
+            <div class="metric-card">
+                <p class="text-muted mb-1">Assignments · Over budget</p>
+                <p class="h4 fw-bold">@Model.StaffAssignments · @Model.OverBudgetEvents</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Model.HighlightedEvent is not null)
+{
+    var spotlight = Model.HighlightedEvent;
+    var laborCost = spotlight.Staff.Sum(s => s.TotalCost);
+    var paid = spotlight.BudgetItems.Where(i => i.Status == EventBudgetPlanner.Core.Models.BudgetStatus.Paid).Sum(i => i.Amount);
+    var isOverBudget = laborCost + paid > spotlight.TargetBudget;
+    <section class="mb-5">
+        <div class="planner-card">
+            <div class="planner-card__header d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="text-uppercase small mb-1">Upcoming spotlight</p>
+                    <h3 class="mb-0">@spotlight.Name</h3>
+                </div>
+                <span class="status-chip @(isOverBudget ? "over-budget" : "on-track")">
+                    @spotlight.Date.ToString("MMM d, yyyy")
+                </span>
+            </div>
+            <div class="planner-card__body">
+                <p class="mb-1"><strong>Venue:</strong> @spotlight.Venue</p>
+                <p class="mb-0"><strong>Budget:</strong> @spotlight.TargetBudget @spotlight.Currency</p>
+            </div>
+        </div>
+    </section>
+}
+
+<section class="mb-4">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="subroutine-card h-100">
+                <h5>Create event</h5>
+                <p class="text-muted">Capture dates, venues, and target budget with ISO currency validation.</p>
+                <p class="small text-muted">Maps to <code>event create</code> CLI flow.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="subroutine-card h-100">
+                <h5>Budget entries</h5>
+                <p class="text-muted">Track planned/committed/paid line items with categorisation and auto summaries.</p>
+                <p class="small text-muted">Maps to <code>budget add</code>.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="subroutine-card h-100">
+                <h5>Staffing</h5>
+                <p class="text-muted">Assign personnel, hourly rates, and effort to surface labour burn-down.</p>
+                <p class="small text-muted">Maps to <code>staff add</code>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mb-5">
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="form-panel">
+                <h4>Authentication story</h4>
+                <ul class="mb-0">
+                    <li>Custom registration fields (username, full name, phone, RFC 822 email).</li>
+                    <li>Identity + OpenIddict for first-party tokens.</li>
+                    <li>Optional GitHub OAuth2 login (configure via secrets).</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-panel">
+                <h4>Deployment readiness</h4>
+                <ul class="mb-0">
+                    <li>SQLite-backed Identity for cross-OS demos.</li>
+                    <li>File-based planner data reused from the CLI.</li>
+                    <li>Responsive UI tested on Windows, Linux, macOS.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
