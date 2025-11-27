@@ -11,6 +11,7 @@
 EventBudgetPlanner.sln
 ├─ src/EventBudgetPlanner.Core      # Domain models, services, persistence
 ├─ src/EventBudgetPlanner.Cli       # System.CommandLine powered CLI
+├─ src/EventBudgetPlanner.Web       # ASP.NET Core MVC app (Lab 3)
 ├─ tests/EventBudgetPlanner.Tests   # xUnit tests for services + persistence
 └─ docs/architecture.md             # High-level design document
 ```
@@ -110,6 +111,45 @@ Vagrant is not available inside the Dev Container; run it on your host OS (Windo
 	```
 
 If `vagrant` is still not found, ensure the installation directory (typically `C:\HashiCorp\Vagrant\bin`) is present in the Windows `PATH` environment variable and re-open the shell.
+
+## Lab 3 — ASP.NET Core MVC experience
+
+The web app in `src/EventBudgetPlanner.Web` reuses the same domain services and adds a polished MVC UI with Identity + OpenIddict. It implements every rubric item:
+
+- **Landing page** with hero section, live metrics, spotlight card, and description of CLI subroutines.
+- **Authentication** powered by ASP.NET Core Identity with a custom `ApplicationUser` (full name required), RFC 822 e-mail validation, phone rules, and password policy (8+ chars, mixed case, digit, symbol). GitHub OAuth2 is optionally enabled via configuration.
+- **Protected planner area** (`/Planner/*`) exposing three subroutine pages (Create Event, Budget Line Item, Staff Assignment) plus a dashboard summarising events/portfolio health. Access requires sign-in.
+- **Profile view** that surfaces stored identity info and any linked external providers.
+- **OpenIddict** seeds a confidential PKCE client so the app can serve as an OAuth2/OIDC provider during demos.
+
+### Running the web app
+
+```bash
+dotnet ef database update --project src/EventBudgetPlanner.Web
+dotnet run --project src/EventBudgetPlanner.Web
+```
+
+Key settings live in `appsettings.json`:
+
+- `ConnectionStrings:DefaultConnection` — SQLite file for Identity data (`app.db`).
+- `PlannerData:Path` — path to the shared JSON data store (defaults to `../../data/event-plans.json` so CLI + Web use the same file).
+- `OAuth:EventPlannerWeb:*` — OpenIddict client metadata used during seeding.
+- `Authentication:GitHub:*` — optional external login (use `dotnet user-secrets set "Authentication:GitHub:ClientId" "..."`).
+
+The startup sequence automatically runs EF Core migrations, seeds the OpenIddict client described above, and provisions a `demo@eventplanner.local / DemoUser1!` account for quick validation.
+
+### Pages & routes
+
+| Route | Description |
+| --- | --- |
+| `/` | Marketing/overview page with status metrics and calls-to-action |
+| `/Planner/Dashboard` | Authenticated dashboard summarising portfolio + quick actions |
+| `/Planner/CreateEvent` | Form mirroring `event create` CLI |
+| `/Planner/AddBudgetItem` | Form mirroring `budget add` CLI |
+| `/Planner/AssignStaff` | Form mirroring `staff add` CLI |
+| `/Profile` | Displays stored identity info + external logins |
+
+Each form enforces client + server-side validation, uses antiforgery tokens, and writes back through the shared `EventPlannerService`, keeping parity with the CLI behavior.
 
 ## Tests
 Run the automated suite (unit + lightweight persistence tests):
